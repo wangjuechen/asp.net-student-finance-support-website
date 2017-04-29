@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FinanceDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Y:\SFS_PROJECT\ASP.NET-STUDENT-FINANCE-SUPPORT-WEBSITE\APP_DATA\FINANCEDB.MDF.dbo.LoginDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LoginDetails">
+          <Key>
+            <PropertyRef Name="LoginID" />
+            <PropertyRef Name="Loginpassword" />
+          </Key>
+          <Property Name="LoginID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Loginpassword" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student_Registration_Form">
+          <Key>
+            <PropertyRef Name="Student_ID" />
+          </Key>
+          <Property Name="Student_ID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Fname" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Lname" Type="varchar" MaxLength="20" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DOB" Type="datetime" Nullable="false" />
+          <Property Name="Address1" Type="varchar" MaxLength="50" />
+          <Property Name="Accomodition_Type" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="Mobile" Type="varchar" MaxLength="20" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Marital_Status" Type="varchar" MaxLength="50" />
+          <Property Name="Contact" Type="varchar" MaxLength="50" />
+          <Property Name="Main_Ethnicity" Type="varchar" MaxLength="50" />
+          <Property Name="Faculty" Type="varchar" MaxLength="50" />
+          <Property Name="Courses" Type="varchar" MaxLength="50" />
+          <Property Name="Detailed_Ethnicity" Type="varchar" MaxLength="50" />
+          <Property Name="campus" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Y:\SFS_PROJECT\ASP.NET-STUDENT-FINANCE-SUPPORT-WEBSITE\APP_DATA\FINANCEDB.MDF.dbo.Student_vouchers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Student_vouchers">
+          <Key>
+            <PropertyRef Name="student_ID" />
+            <PropertyRef Name="GrantType" />
+            <PropertyRef Name="GrantDescription" />
+            <PropertyRef Name="GrantValue" />
+            <PropertyRef Name="DateOfIssue" />
+            <PropertyRef Name="Refno" />
+          </Key>
+          <Property Name="student_ID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="GrantType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GrantDescription" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GrantValue" Type="float" Nullable="false" />
+          <Property Name="DateOfIssue" Type="datetime" Nullable="false" />
+          <Property Name="KuhaFunds" Type="float" />
+          <Property Name="Refno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__Student_v__stude__3C69FB99">
+          <End Role="Student_Registration_Form" Type="Self.Student_Registration_Form" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Student_vouchers" Type="Self.Student_vouchers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student_Registration_Form">
+              <PropertyRef Name="Student_ID" />
+            </Principal>
+            <Dependent Role="Student_vouchers">
+              <PropertyRef Name="student_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_vouchers_Student_Registration_Form">
+          <End Role="Student_Registration_Form" Type="Self.Student_Registration_Form" Multiplicity="1" />
+          <End Role="Student_vouchers" Type="Self.Student_vouchers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student_Registration_Form">
+              <PropertyRef Name="Student_ID" />
+            </Principal>
+            <Dependent Role="Student_vouchers">
+              <PropertyRef Name="student_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FinanceDbModelStoreContainer">
+          <EntitySet Name="Student_Registration_Form" EntityType="Self.Student_Registration_Form" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoginDetails" EntityType="Self.LoginDetails" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LoginDetails].[LoginID] AS [LoginID], 
+    [LoginDetails].[Loginpassword] AS [Loginpassword]
+    FROM [dbo].[LoginDetails] AS [LoginDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Student_vouchers" EntityType="Self.Student_vouchers" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Student_vouchers].[student_ID] AS [student_ID], 
+    [Student_vouchers].[GrantType] AS [GrantType], 
+    [Student_vouchers].[GrantDescription] AS [GrantDescription], 
+    [Student_vouchers].[GrantValue] AS [GrantValue], 
+    [Student_vouchers].[DateOfIssue] AS [DateOfIssue], 
+    [Student_vouchers].[KuhaFunds] AS [KuhaFunds], 
+    [Student_vouchers].[Refno] AS [Refno]
+    FROM [dbo].[Student_vouchers] AS [Student_vouchers]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Student_v__stude__3C69FB99" Association="Self.FK__Student_v__stude__3C69FB99">
+            <End Role="Student_Registration_Form" EntitySet="Student_Registration_Form" />
+            <End Role="Student_vouchers" EntitySet="Student_vouchers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_vouchers_Student_Registration_Form" Association="Self.FK_Student_vouchers_Student_Registration_Form">
+            <End Role="Student_Registration_Form" EntitySet="Student_Registration_Form" />
+            <End Role="Student_vouchers" EntitySet="Student_vouchers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FinanceDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Student_Registration_Form">
+          <Key>
+            <PropertyRef Name="Student_ID" />
+          </Key>
+          <Property Name="Student_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Accomodition_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Marital_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Main_Ethnicity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Faculty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Courses" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Detailed_Ethnicity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="campus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Student_vouchers" Relationship="Self.FK__Student_v__stude__3C69FB99" FromRole="Student_Registration_Form" ToRole="Student_vouchers" />
+          <NavigationProperty Name="Student_vouchers1" Relationship="Self.FK_Student_vouchers_Student_Registration_Form" FromRole="Student_Registration_Form" ToRole="Student_vouchers" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="LoginDetail">
+          <Key>
+            <PropertyRef Name="LoginID" />
+            <PropertyRef Name="Loginpassword" />
+          </Key>
+          <Property Name="LoginID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Loginpassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student_vouchers">
+          <Key>
+            <PropertyRef Name="student_ID" />
+            <PropertyRef Name="GrantType" />
+            <PropertyRef Name="GrantDescription" />
+            <PropertyRef Name="GrantValue" />
+            <PropertyRef Name="DateOfIssue" />
+            <PropertyRef Name="Refno" />
+          </Key>
+          <Property Name="student_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GrantType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GrantDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GrantValue" Type="Double" Nullable="false" />
+          <Property Name="DateOfIssue" Type="DateTime" Nullable="false" />
+          <Property Name="KuhaFunds" Type="Double" />
+          <Property Name="Refno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Student_Registration_Form" Relationship="Self.FK__Student_v__stude__3C69FB99" FromRole="Student_vouchers" ToRole="Student_Registration_Form" />
+          <NavigationProperty Name="Student_Registration_Form1" Relationship="Self.FK_Student_vouchers_Student_Registration_Form" FromRole="Student_vouchers" ToRole="Student_Registration_Form" />
+        </EntityType>
+        <Association Name="FK__Student_v__stude__3C69FB99">
+          <End Role="Student_Registration_Form" Type="Self.Student_Registration_Form" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Student_vouchers" Type="Self.Student_vouchers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student_Registration_Form">
+              <PropertyRef Name="Student_ID" />
+            </Principal>
+            <Dependent Role="Student_vouchers">
+              <PropertyRef Name="student_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_vouchers_Student_Registration_Form">
+          <End Role="Student_Registration_Form" Type="Self.Student_Registration_Form" Multiplicity="1" />
+          <End Role="Student_vouchers" Type="Self.Student_vouchers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student_Registration_Form">
+              <PropertyRef Name="Student_ID" />
+            </Principal>
+            <Dependent Role="Student_vouchers">
+              <PropertyRef Name="student_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FinanceDbEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Student_Registration_Form" EntityType="Self.Student_Registration_Form" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="LoginDetails" EntityType="Self.LoginDetail" />
+          <EntitySet Name="Student_vouchers" EntityType="Self.Student_vouchers" />
+          <AssociationSet Name="FK__Student_v__stude__3C69FB99" Association="Self.FK__Student_v__stude__3C69FB99">
+            <End Role="Student_Registration_Form" EntitySet="Student_Registration_Form" />
+            <End Role="Student_vouchers" EntitySet="Student_vouchers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_vouchers_Student_Registration_Form" Association="Self.FK_Student_vouchers_Student_Registration_Form">
+            <End Role="Student_Registration_Form" EntitySet="Student_Registration_Form" />
+            <End Role="Student_vouchers" EntitySet="Student_vouchers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FinanceDbModelStoreContainer" CdmEntityContainer="FinanceDbEntities1">
+          <EntitySetMapping Name="Student_Registration_Form">
+            <EntityTypeMapping TypeName="FinanceDbModel.Student_Registration_Form">
+              <MappingFragment StoreEntitySet="Student_Registration_Form">
+                <ScalarProperty Name="Student_ID" ColumnName="Student_ID" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Accomodition_Type" ColumnName="Accomodition_Type" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Marital_Status" ColumnName="Marital_Status" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Main_Ethnicity" ColumnName="Main_Ethnicity" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Courses" ColumnName="Courses" />
+                <ScalarProperty Name="Detailed_Ethnicity" ColumnName="Detailed_Ethnicity" />
+                <ScalarProperty Name="campus" ColumnName="campus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FinanceDbModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginDetails">
+            <EntityTypeMapping TypeName="FinanceDbModel.LoginDetail">
+              <MappingFragment StoreEntitySet="LoginDetails">
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="Loginpassword" ColumnName="Loginpassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Student_vouchers">
+            <EntityTypeMapping TypeName="FinanceDbModel.Student_vouchers">
+              <MappingFragment StoreEntitySet="Student_vouchers">
+                <ScalarProperty Name="student_ID" ColumnName="student_ID" />
+                <ScalarProperty Name="GrantType" ColumnName="GrantType" />
+                <ScalarProperty Name="GrantDescription" ColumnName="GrantDescription" />
+                <ScalarProperty Name="GrantValue" ColumnName="GrantValue" />
+                <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
+                <ScalarProperty Name="KuhaFunds" ColumnName="KuhaFunds" />
+                <ScalarProperty Name="Refno" ColumnName="Refno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
